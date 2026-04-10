@@ -5,7 +5,9 @@
             :url "https://www.eclipse.org/legal/epl-2.0/"}
   :dependencies [[org.clojure/clojure "1.11.1"]
                  [com.h2database/h2 "2.4.240"]
-                 [com.github.seancorfield/next.jdbc "1.3.1093"]]
+                 [com.github.seancorfield/next.jdbc "1.3.1093"]
+                 [com.novemberain/langohr "5.6.0"]
+                 [cheshire "6.2.0"]]
   :main ^:skip-aot mikroservisna-arh-is-speakers.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all

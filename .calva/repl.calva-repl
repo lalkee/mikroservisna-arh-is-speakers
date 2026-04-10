@@ -204,3 +204,186 @@ clj꞉mikroservisna-arh-is-speakers.repository꞉> 
 (find-all ds)
 []
 clj꞉mikroservisna-arh-is-speakers.repository꞉> 
+; Jacking in...
+; Connecting using "Leiningen" project type.
+; Starting Jack-in: (cd /home/milan/Documents/MikroservisnaArhitekturaIS/mikroservisna-arh-is-speakers; lein update-in :dependencies conj '[nrepl,"1.5.1"]' -- update-in :plugins conj '[cider/cider-nrepl,"0.58.0"]' -- update-in '[:repl-options,:nrepl-middleware]' conj '["cider.nrepl/cider-middleware"]' -- repl :headless)
+; Using host:port 127.0.0.1:39491 ...
+; Hooking up nREPL sessions on port 39491...
+; Connected session: clj, port: 39491
+; Evaluating code from settings: 'calva.autoEvaluateCode.onConnect.clj'
+nil
+clj꞉mikroservisna-arh-is-speakers.core꞉> 
+; Jack-in done.
+clj꞉mikroservisna-arh-is-speakers.core꞉> 
+(repo/get-all ds)
+; Syntax error compiling at (.calva/repl.calva-repl:218:1).
+; No such namespace: repo
+clj꞉mikroservisna-arh-is-speakers.core꞉> 
+; Evaluating file: core.clj
+; 
+; Execution error (FileNotFoundException) at mikroservisna-arh-is-speakers.messaging/eval13532$loading (messaging.clj:1).
+; Could not locate langoht/basic__init.class, langoht/basic.clj or langoht/basic.cljc on classpath.
+; Evaluation of file core.clj failed: class clojure.lang.Compiler$CompilerException
+clj꞉mikroservisna-arh-is-speakers.core꞉> 
+; Evaluating file: core.clj
+#'mikroservisna-arh-is-speakers.core/-main
+clj꞉mikroservisna-arh-is-speakers.core꞉> 
+(repo/get-all ds)
+; Syntax error compiling at (.calva/repl.calva-repl:231:1).
+; No such var: repo/get-all
+clj꞉mikroservisna-arh-is-speakers.core꞉> 
+(repo/find-all ds)
+; Syntax error compiling at (.calva/repl.calva-repl:235:1).
+; Unable to resolve symbol: ds in this context
+clj꞉mikroservisna-arh-is-speakers.core꞉> 
+(repo/find-all (jdbc/get-datasource db-spec))
+; Execution error (JdbcSQLSyntaxErrorException) at org.h2.message.DbException/getJdbcSQLException (DbException.java:514).
+; Table "SPEAKERS" not found (this database is empty); SQL statement:
+; SELECT * FROM speakers [42104-240]
+clj꞉mikroservisna-arh-is-speakers.core꞉> 
+(-main)
+; Starting Speaker Microservice...
+; Database initializ
+(future (-main))
+; Jacking in...
+; Connecting using "Leiningen" project type.
+; Starting Jack-in: (cd /home/milan/Documents/MikroservisnaArhitekturaIS/mikroservisna-arh-is-speakers; lein update-in :dependencies conj '[nrepl,"1.5.1"]' -- update-in :plugins conj '[cider/cider-nrepl,"0.58.0"]' -- update-in '[:repl-options,:nrepl-middleware]' conj '["cider.nrepl/cider-middleware"]' -- repl :headless)
+; Using host:port 127.0.0.1:39113 ...
+; Hooking up nREPL sessions on port 39113...
+; Connected session: clj, port: 39113
+; Evaluating code from settings: 'calva.autoEvaluateCode.onConnect.clj'
+nil
+clj꞉mikroservisna-arh-is-speakers.core꞉> 
+; Jack-in done.
+clj꞉mikroservisna-arh-is-speakers.core꞉> 
+(-main)
+; Starting Speaker Microservice...
+; Database initialized.
+; Jacking in...
+; Connecting using "Leiningen" project type.
+; Starting Jack-in: (cd /home/milan/Documents/MikroservisnaArhitekturaIS/mikroservisna-arh-is-speakers; lein update-in :dependencies conj '[nrepl,"1.5.1"]' -- update-in :plugins conj '[cider/cider-nrepl,"0.58.0"]' -- update-in '[:repl-options,:nrepl-middleware]' conj '["cider.nrepl/cider-middleware"]' -- repl :headless)
+; Using host:port 127.0.0.1:38533 ...
+; Hooking up nREPL sessions on port 38533...
+; Connected session: clj, port: 38533
+; Evaluating code from settings: 'calva.autoEvaluateCode.onConnect.clj'
+nil
+clj꞉mikroservisna-arh-is-speakers.core꞉> 
+; Jack-in done.
+clj꞉mikroservisna-arh-is-speakers.core꞉> 
+(future (-main))
+; Starting Speaker Microservice...
+#<Future@5fb70173: :pending>
+clj꞉mikroservisna-arh-is-speakers.core꞉> 
+; Database initialized.
+abs
+#function[clojure.core/abs]
+clj꞉mikroservisna-arh-is-speakers.core꞉> 
+(repo/find-all ds)
+; Syntax error compiling at (.calva/repl.calva-repl:281:1).
+; Unable to resolve symbol: ds in this context
+clj꞉mikroservisna-arh-is-speakers.core꞉> 
+(repo/find-all (jdbc/get-datasource db-spec))
+[]
+clj꞉mikroservisna-arh-is-speakers.core꞉> 
+(repo/find-all (jdbc/get-datasource db-spec))
+[]
+clj꞉mikroservisna-arh-is-speakers.core꞉> 
+#'mikroservisna-arh-is-speakers.messaging/start-consumers
+clj꞉mikroservisna-arh-is-speakers.messaging꞉> 
+(repo/find-all ds)
+; Syntax error compiling at (.calva/repl.calva-repl:293:1).
+; Unable to resolve symbol: ds in this context
+clj꞉mikroservisna-arh-is-speakers.messaging꞉> 
+(repo/find-all (jdbc/get-datasource db-spec))
+; Syntax error compiling at (.calva/repl.calva-repl:297:16).
+; No such namespace: jdbc
+clj꞉mikroservisna-arh-is-speakers.messaging꞉> 
+; Evaluating file: core.clj
+#'mikroservisna-arh-is-speakers.core/-main
+clj꞉mikroservisna-arh-is-speakers.core꞉> 
+(repo/find-all (jdbc/get-datasource db-spec))
+[]
+clj꞉mikroservisna-arh-is-speakers.core꞉> 
+(repo/find-all (jdbc/get-datasource db-spec))
+[]
+clj꞉mikroservisna-arh-is-speakers.core꞉> 
+; Jacking in...
+; Connecting using "Leiningen" project type.
+; Starting Jack-in: (cd /home/milan/Documents/MikroservisnaArhitekturaIS/mikroservisna-arh-is-speakers; lein update-in :dependencies conj '[nrepl,"1.5.1"]' -- update-in :plugins conj '[cider/cider-nrepl,"0.58.0"]' -- update-in '[:repl-options,:nrepl-middleware]' conj '["cider.nrepl/cider-middleware"]' -- repl :headless)
+; Using host:port 127.0.0.1:38981 ...
+; Hooking up nREPL sessions on port 38981...
+; Connected session: clj, port: 38981
+; Evaluating code from settings: 'calva.autoEvaluateCode.onConnect.clj'
+nil
+clj꞉mikroservisna-arh-is-speakers.core꞉> 
+; Jack-in done.
+clj꞉mikroservisna-arh-is-speakers.core꞉> 
+(in-ns 'mikroservisna-arh-is-speakers.core)
+
+;; Initialize everything manually so it stays alive in the REPL session
+(def ds (jdbc/get-datasource db-spec))
+(repo/create-table! ds)
+(def conn (rmq/connect))
+(def ch (lch/open conn))
+
+;; Start listening for the frontend's messages
+(messaging/start-consumers ch ds)
+; Syntax error compiling at (.calva/repl.calva-repl:330:1).
+; Unable to resolve symbol: ch in this context
+clj꞉mikroservisna-arh-is-speakers.core꞉> 
+(in-ns 'mikroservisna-arh-is-speakers.core)
+
+;; Initialize everything manually so it stays alive in the REPL session
+(def ds (jdbc/get-datasource db-spec))
+(repo/create-table! ds)
+(def conn (rmq/connect))
+(def ch (lch/open conn))
+
+;; Start listening for the frontend's messages
+(messaging/start-consumers ch ds)
+; Syntax error compiling at (.calva/repl.calva-repl:343:1).
+; Unable to resolve symbol: ch in this context
+clj꞉mikroservisna-arh-is-speakers.core꞉> 
+(repo/find-all (jdbc/get-datasource db-spec))
+[]
+clj꞉mikroservisna-arh-is-speakers.core꞉> 
+abs
+#function[clojure.core/abs]
+clj꞉mikroservisna-arh-is-speakers.core꞉> 
+(require '[clojure.string :as str])
+nil
+clj꞉mikroservisna-arh-is-speakers.core꞉> 
+(str/lower-case "AAA_BBB")
+; Syntax error compiling at (.calva/repl.calva-repl:356:1).
+; No such namespace: str
+clj꞉mikroservisna-arh-is-speakers.core꞉> 
+(require '[clojure.string :as str])
+nil
+clj꞉mikroservisna-arh-is-speakers.core꞉> 
+(str/lower-case "AAA_BBB")
+"aaa_bbb"
+clj꞉mikroservisna-arh-is-speakers.core꞉> 
+#'mikroservisna-arh-is-speakers.messaging/clean-name
+clj꞉mikroservisna-arh-is-speakers.messaging꞉> 
+#'mikroservisna-arh-is-speakers.messaging/to-camel
+clj꞉mikroservisna-arh-is-speakers.messaging꞉> 
+(clean-name "SPEAKERS/FIRST_NAME")
+; Execution error (ClassCastException) at mikroservisna-arh-is-speakers.messaging/clean-name (messaging.clj:11).
+; class java.lang.String cannot be cast to class java.util.regex.Pattern (java.lang.String and java.util.regex.Pattern are in module java.base of loader 'bootstrap')
+clj꞉mikroservisna-arh-is-speakers.messaging꞉> 
+#'mikroservisna-arh-is-speakers.messaging/to-camel
+clj꞉mikroservisna-arh-is-speakers.messaging꞉> 
+#'mikroservisna-arh-is-speakers.messaging/clean-name
+clj꞉mikroservisna-arh-is-speakers.messaging꞉> 
+(clean-name "SPEAKERS/FIRST_NAME")
+"FIRST_NAME"
+clj꞉mikroservisna-arh-is-speakers.messaging꞉> 
+(to-camel (clean-name "SPEAKERS/FIRST_NAME"))
+"firstName"
+clj꞉mikroservisna-arh-is-speakers.messaging꞉> 
+#'mikroservisna-arh-is-speakers.messaging/transform-res
+clj꞉mikroservisna-arh-is-speakers.messaging꞉> 
+(transform-res [{:SPEAKERS/ID 1, :SPEAKERS/FIRST_NAME aaaa, :SPEAKERS/LAST_NAME aaaa, :SPEAKERS/TITLE aaaa, :SPEAKERS/EXPERTISE aaaa}])
+; Syntax error compiling at (.calva/repl.calva-repl:386:1).
+; Unable to resolve symbol: aaaa in this context
+clj꞉mikroservisna-arh-is-speakers.messaging꞉> 
