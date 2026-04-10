@@ -1,0 +1,206 @@
+; Jacking in...
+; Connecting using "Leiningen" project type.
+; Starting Jack-in: (cd /home/milan/Documents/MikroservisnaArhitekturaIS/mikroservisna-arh-is-speakers; lein update-in :dependencies conj '[nrepl,"1.5.1"]' -- update-in :plugins conj '[cider/cider-nrepl,"0.58.0"]' -- update-in '[:repl-options,:nrepl-middleware]' conj '["cider.nrepl/cider-middleware"]' -- repl :headless)
+; Using host:port 127.0.0.1:32801 ...
+; Hooking up nREPL sessions on port 32801...
+; Connected session: clj, port: 32801
+; Evaluating code from settings: 'calva.autoEvaluateCode.onConnect.clj'
+nil
+clj꞉mikroservisna-arh-is-speakers.core꞉> 
+"Please see https://calva.io/output/#about-stdout-in-the-repl-window
+about why stdout printed to this file is prepended with `;` to be line comments."
+clj꞉mikroservisna-arh-is-speakers.core꞉> 
+; Jack-in done.
+clj꞉mikroservisna-arh-is-speakers.core꞉> 
+(def db {:dbtype "h2" :dbname "example"})
+#'mikroservisna-arh-is-speakers.core/db
+clj꞉mikroservisna-arh-is-speakers.core꞉> 
+(def ds (jdbc/get-datasource db))
+; Syntax error compiling at (.calva/repl.calva-repl:18:9).
+; No such namespace: jdbc
+clj꞉mikroservisna-arh-is-speakers.core꞉> 
+(require '[next.jdbc :as jdbc])
+nil
+clj꞉mikroservisna-arh-is-speakers.core꞉> 
+(def ds (jdbc/get-datasource db))
+#'mikroservisna-arh-is-speakers.core/ds
+clj꞉mikroservisna-arh-is-speakers.core꞉> 
+#'mikroservisna-arh-is-speakers.core/ds
+clj꞉mikroservisna-arh-is-speakers.core꞉> 
+(in-ns mikroservisna-arh-is-speakers.repository)
+; Syntax error (ClassNotFoundException) compiling at (.calva/repl.calva-repl:30:1).
+; mikroservisna-arh-is-speakers.repository
+clj꞉mikroservisna-arh-is-speakers.core꞉> 
+(in-ns 'mikroservisna-arh-is-speakers.repository)
+mikroservisna-arh-is-speakers.repository
+clj꞉mikroservisna-arh-is-speakers.core꞉> 
+; Connecting using "Leiningen" project type.
+; Connecting ...
+; Reading port file: file:///home/milan/Documents/MikroservisnaArhitekturaIS/mikroservisna-arh-is-speakers/.nrepl-port ...
+; Using host:port localhost:32801 ...
+; Hooking up nREPL sessions on port 32801...
+; Connected session: clj:2, port: 32801
+; Evaluating code from settings: 'calva.autoEvaluateCode.onConnect.clj'
+nil
+clj:2꞉mikroservisna-arh-is-speakers.core꞉> 
+(in-ns 'mikroservisna-arh-is-speakers.repository)
+#namespace[mikroservisna-arh-is-speakers.repository]
+clj:2꞉mikroservisna-arh-is-speakers.repository꞉> 
+(def db {:dbtype "h2" :dbname "example"})
+#'mikroservisna-arh-is-speakers.repository/db
+clj:2꞉mikroservisna-arh-is-speakers.repository꞉> 
+(def ds (jdbc/get-datasource db))
+; Syntax error compiling at (.calva/repl.calva-repl:52:9).
+; No such namespace: jdbc
+clj:2꞉mikroservisna-arh-is-speakers.repository꞉> 
+; Aborting connect, error determining connect sequence.
+abs
+; Syntax error compiling at (.calva/repl.calva-repl:0:0).
+; Unable to resolve symbol: abs in this context
+clj:2꞉mikroservisna-arh-is-speakers.repository꞉> 
+; Jacking in...
+; Connecting using "Leiningen" project type.
+; Starting Jack-in: (cd /home/milan/Documents/MikroservisnaArhitekturaIS/mikroservisna-arh-is-speakers; lein update-in :dependencies conj '[nrepl,"1.5.1"]' -- update-in :plugins conj '[cider/cider-nrepl,"0.58.0"]' -- update-in '[:repl-options,:nrepl-middleware]' conj '["cider.nrepl/cider-middleware"]' -- repl :headless)
+; Using host:port 127.0.0.1:33093 ...
+; Hooking up nREPL sessions on port 33093...
+; Connected session: clj, port: 33093
+; Evaluating code from settings: 'calva.autoEvaluateCode.onConnect.clj'
+nil
+clj꞉mikroservisna-arh-is-speakers.core꞉> 
+; Jack-in done.
+clj꞉mikroservisna-arh-is-speakers.core꞉> 
+; Evaluating file: repository.clj
+; 
+; ; clj  mikroservisna-arh-is-speakers.repository 
+; Syntax error compiling at (src/mikroservisna_arh_is_speakers/repository.clj:6:3).
+; No such var: jdbc/execute
+; Evaluation of file repository.clj failed: class clojure.lang.Compiler$CompilerException
+clj꞉mikroservisna-arh-is-speakers.repository꞉> 
+; Evaluating file: repository.clj
+#'mikroservisna-arh-is-speakers.repository/save!
+clj꞉mikroservisna-arh-is-speakers.repository꞉> 
+(def db {:dbtype "h2" :dbname "example"})
+#'mikroservisna-arh-is-speakers.repository/db
+clj꞉mikroservisna-arh-is-speakers.repository꞉> 
+(def ds (jdbc/get-datasource db))
+#'mikroservisna-arh-is-speakers.repository/ds
+clj꞉mikroservisna-arh-is-speakers.repository꞉> 
+(create-table! ds)
+; Execution error (ExceptionInfo) at next.jdbc/ensure-sql-params (jdbc.clj:185).
+; sql-params should be a vector containing a SQL string and any parameters
+clj꞉mikroservisna-arh-is-speakers.repository꞉> 
+(jdbc/execute! ds "SELECT 1")
+; Execution error (ExceptionInfo) at next.jdbc/ensure-sql-params (jdbc.clj:185).
+; sql-params should be a vector containing a SQL string and any parameters
+clj꞉mikroservisna-arh-is-speakers.repository꞉> 
+(jdbc/execute! ds ["SELECT 1"])
+[{:1 1}]
+clj꞉mikroservisna-arh-is-speakers.repository꞉> 
+(create-table! ds)
+; Execution error (ExceptionInfo) at next.jdbc/ensure-sql-params (jdbc.clj:185).
+; sql-params should be a vector containing a SQL string and any parameters
+clj꞉mikroservisna-arh-is-speakers.repository꞉> 
+(jdbc/execute! ds "SELECT 1")
+; Execution error (ExceptionInfo) at next.jdbc/ensure-sql-params (jdbc.clj:185).
+; sql-params should be a vector containing a SQL string and any parameters
+clj꞉mikroservisna-arh-is-speakers.repository꞉> 
+#'mikroservisna-arh-is-speakers.repository/create-table!
+clj꞉mikroservisna-arh-is-speakers.repository꞉> 
+(create-table! ds)
+; Execution error (ExceptionInfo) at next.jdbc/ensure-sql-params (jdbc.clj:185).
+; sql-params should be a vector containing a SQL string and any parameters
+clj꞉mikroservisna-arh-is-speakers.repository꞉> 
+#'mikroservisna-arh-is-speakers.repository/create-table!
+clj꞉mikroservisna-arh-is-speakers.repository꞉> 
+(create-table! ds)
+[#:next.jdbc{:update-count 0}]
+clj꞉mikroservisna-arh-is-speakers.repository꞉> 
+(find-all ds)
+; Execution error (JdbcSQLSyntaxErrorException) at org.h2.message.DbException/getJdbcSQLException (DbException.java:514).
+; Syntax error in SQL statement "SELECT * [*]FORM speakers"; SQL statement:
+; SELECT * FORM speakers [42000-240]
+clj꞉mikroservisna-arh-is-speakers.repository꞉> 
+#'mikroservisna-arh-is-speakers.repository/find-all
+clj꞉mikroservisna-arh-is-speakers.repository꞉> 
+(find-all ds)
+[]
+clj꞉mikroservisna-arh-is-speakers.repository꞉> 
+(save! {:id 987 first_name "Pera"
+        last_name "Peric"
+        title "Dr."
+        expertise "ML"})
+; Syntax error compiling at (.calva/repl.calva-repl:128:1).
+; Unable to resolve symbol: first_name in this context
+clj꞉mikroservisna-arh-is-speakers.repository꞉> 
+(save! {:id 987 :first_name "Pera"
+        :last_name "Peric"
+        :title "Dr."
+        :expertise "ML"})
+:expertise
+clj꞉mikroservisna-arh-is-speakers.repository꞉> 
+(find-all ds)
+[]
+clj꞉mikroservisna-arh-is-speakers.repository꞉> 
+(save! ds {:id 987 first_name "Pera"
+        last_name "Peric"
+        title "Dr."
+        expertise "ML"})
+; Syntax error compiling at (.calva/repl.calva-repl:144:1).
+; Unable to resolve symbol: first_name in this context
+clj꞉mikroservisna-arh-is-speakers.repository꞉> 
+(save! ds {:id 987 :first_name "Pera"
+        :last_name "Peric"
+        :title "Dr."
+        :expertise "ML"})
+#:SPEAKERS{:ID 987}
+clj꞉mikroservisna-arh-is-speakers.repository꞉> 
+(find-all ds)
+[#:SPEAKERS{:ID 987, :FIRST_NAME "Pera", :LAST_NAME "Peric", :TITLE "Dr.", :EXPERTISE "ML"}]
+clj꞉mikroservisna-arh-is-speakers.repository꞉> 
+; Syntax error reading source at (REPL:13:2).
+; Unmatched delimiter: )
+clj꞉mikroservisna-arh-is-speakers.repository꞉> 
+#'mikroservisna-arh-is-speakers.repository/find-by-id
+clj꞉mikroservisna-arh-is-speakers.repository꞉> 
+(find-by-id ds 987)
+; Execution error (JdbcSQLSyntaxErrorException) at org.h2.message.DbException/getJdbcSQLException (DbException.java:514).
+; Table "LOCATION" not found; SQL statement:
+; SELECT * FROM location WHERE id = ? [42102-240]
+clj꞉mikroservisna-arh-is-speakers.repository꞉> 
+#'mikroservisna-arh-is-speakers.repository/find-by-id
+clj꞉mikroservisna-arh-is-speakers.repository꞉> 
+(find-by-id ds 987)
+#:SPEAKERS{:ID 987, :FIRST_NAME "Pera", :LAST_NAME "Peric", :TITLE "Dr.", :EXPERTISE "ML"}
+clj꞉mikroservisna-arh-is-speakers.repository꞉> 
+(find-by-id ds 989)
+nil
+clj꞉mikroservisna-arh-is-speakers.repository꞉> 
+#'mikroservisna-arh-is-speakers.repository/delete!
+clj꞉mikroservisna-arh-is-speakers.repository꞉> 
+(delete! ds 987)
+#function[mikroservisna-arh-is-speakers.repository/delete!]
+clj꞉mikroservisna-arh-is-speakers.repository꞉> 
+(find-all ds)
+[#:SPEAKERS{:ID 987, :FIRST_NAME "Pera", :LAST_NAME "Peric", :TITLE "Dr.", :EXPERTISE "ML"}]
+clj꞉mikroservisna-arh-is-speakers.repository꞉> 
+(find-by-id ds 987)
+#:SPEAKERS{:ID 987, :FIRST_NAME "Pera", :LAST_NAME "Peric", :TITLE "Dr.", :EXPERTISE "ML"}
+clj꞉mikroservisna-arh-is-speakers.repository꞉> 
+#'mikroservisna-arh-is-speakers.repository/delete!
+clj꞉mikroservisna-arh-is-speakers.repository꞉> 
+#'mikroservisna-arh-is-speakers.repository/delete!
+clj꞉mikroservisna-arh-is-speakers.repository꞉> 
+(delete! 987)
+; Execution error (ArityException) at mikroservisna-arh-is-speakers.repository/eval12795 (repl.calva-repl:193).
+; Wrong number of args (1) passed to: mikroservisna-arh-is-speakers.repository/delete!
+clj꞉mikroservisna-arh-is-speakers.repository꞉> 
+(delete! id 987)
+; Syntax error compiling at (.calva/repl.calva-repl:197:1).
+; Unable to resolve symbol: id in this context
+clj꞉mikroservisna-arh-is-speakers.repository꞉> 
+(delete! ds 987)
+#:next.jdbc{:update-count 1}
+clj꞉mikroservisna-arh-is-speakers.repository꞉> 
+(find-all ds)
+[]
+clj꞉mikroservisna-arh-is-speakers.repository꞉> 

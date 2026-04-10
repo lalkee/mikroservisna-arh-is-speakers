@@ -1,0 +1,6 @@
+2026-04-10 13:48:48.090692+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * [*]FORM speakers"; SQL statement:
+SELECT * FORM speakers [42000-240]
+2026-04-10 13:59:28.732156+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "LOCATION" not found; SQL statement:
+SELECT * FROM location WHERE id = ? [42102-240]
