@@ -38,9 +38,11 @@
     (reduce-kv (fn [m k v] (assoc m (to-kebab k) v)) {} data)
     data))
 
-;; Update your save! function
-(defn save! [ds speaker]
+(defn insert! [ds speaker]
   (sql/insert! ds :speakers (transform-in speaker)))
+
+(defn update! [ds id speaker]
+  (sql/update! ds :speakers (transform-in speaker) {:id id}))
 
 (defn find-by-id [ds id]
   (transform-out (sql/get-by-id ds :speakers id)))
@@ -48,9 +50,6 @@
 (defn find-all [ds]
   (transform-out (sql/query ds ["SELECT * FROM speakers"])))
 
-(defn save! [ds speaker]
-  (sql/insert! ds :speakers (transform-in speaker)))
-
 (defn delete! [ds id]
-  (sql/delete! ds :speakers id))
+  (sql/delete! ds :speakers {:id id}))
 

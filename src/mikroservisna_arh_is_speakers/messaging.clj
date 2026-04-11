@@ -2,8 +2,7 @@
   (:require [cheshire.core :as json]
             [langohr.basic :as lb]
             [langohr.consumers :as lc]
-            [mikroservisna-arh-is-speakers.repository :as repo]
-            [clojure.string :as str]))
+            [mikroservisna-arh-is-speakers.repository :as repo]))
 
 (defn- decode [payload]
   (json/parse-string  (String. payload "UTF-8") true))
@@ -34,9 +33,11 @@
     (publish-response ch metadata speaker)))
 
 (defn handle-save [payload ds]
-  (let [data (decode payload)]
-    (println "[handle-save] decoded data:" data)
-    (repo/save! ds data)))
+  (let [data (decode payload)
+        id (:id data)]
+    (if (and id (repo/find-by-id ds id))
+      (repo/update! ds id (dissoc data :id))
+      (repo/insert! ds data))))
 
 (defn handle-delete [payload ds]
   (let [id (decode payload)]

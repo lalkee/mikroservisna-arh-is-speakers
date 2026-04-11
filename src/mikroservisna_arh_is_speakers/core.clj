@@ -15,7 +15,7 @@
     (repo/create-table! ds)
     (println "Database initialized.")
 
-    ;;uses localhost:5672 by default
+    ;uses localhost:5672 by default
     (try
       (let [conn (rmq/connect)
             ch   (lch/open conn)]
