@@ -2,8 +2,7 @@
   (:require [next.jdbc.sql :as sql]
             [next.jdbc :as jdbc]
             [clojure.string :as str]))
-
-(defn create-table! [ds]
+(defn create-tables! [ds]
   (jdbc/execute! ds ["CREATE TABLE IF NOT EXISTS speakers (
     id BIGINT NOT NULL AUTO_INCREMENT,
     first_name VARCHAR(255),
@@ -11,6 +10,16 @@
     title VARCHAR(255),
     expertise VARCHAR(255),
     PRIMARY KEY (id)
+);
+  CREATE TABLE IF NOT EXISTS participations (
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    event_id BIGINT,
+    speaker_id BIGINT,
+    PRIMARY KEY (id),
+    CONSTRAINT fk_speaker
+      FOREIGN KEY (speaker_id) 
+      REFERENCES speakers(id)
+      ON DELETE RESTRICT
 );"]))
 
 (defn- to-camel [k]
@@ -38,18 +47,41 @@
     (reduce-kv (fn [m k v] (assoc m (to-kebab k) v)) {} data)
     data))
 
-(defn insert! [ds speaker]
+;===================== SPEAKER =====================================
+
+(defn insert-speaker! [ds speaker]
   (sql/insert! ds :speakers (transform-in speaker)))
 
-(defn update! [ds id speaker]
+(defn update-speaker! [ds id speaker]
   (sql/update! ds :speakers (transform-in speaker) {:id id}))
 
-(defn find-by-id [ds id]
+(defn find-speaker-by-id [ds id]
   (transform-out (sql/get-by-id ds :speakers id)))
 
-(defn find-all [ds]
+(defn find-all-speakers [ds]
   (transform-out (sql/query ds ["SELECT * FROM speakers"])))
 
-(defn delete! [ds id]
+(defn delete-speaker! [ds id]
   (sql/delete! ds :speakers {:id id}))
+
+(defn find-speakers-by-event-ids [ds event-ids]
+  (if (empty? event-ids)
+    []
+    (let [query (str "SELECT s.*, p.event_id FROM speakers s "
+                     "JOIN participations p ON s.id = p.speaker_id "
+                     "WHERE p.event_id IN ("
+                     (clojure.string/join "," (repeat (count event-ids) "?"))
+                     ")")
+          results (transform-out (sql/query ds (into [query] event-ids)))]
+      ;group the flat list into a map: {event-id [speaker1, speaker2]}    
+      (group-by :eventId results))))
+
+;===================== PARTICIPATION ===============================
+
+(defn insert-participation! [ds participation]
+  (sql/insert! ds :participations participation))
+
+(defn delete-participations-by-event! [ds event-id]
+  (println "[repo] Clearing old participations for event-id:" event-id)
+  (sql/delete! ds :participations {:event_id event-id}))
 
