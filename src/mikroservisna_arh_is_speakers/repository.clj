@@ -16,7 +16,6 @@
     event_id BIGINT,
     speaker_id BIGINT,
     PRIMARY KEY (id),
-    -- This constraint prevents deleting a speaker if they exist here
     CONSTRAINT fk_speaker
       FOREIGN KEY (speaker_id) 
       REFERENCES speakers(id)

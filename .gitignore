@@ -12,3 +12,12 @@ pom.xml.asc
 .hgignore
 .hg/
 .clj-kondo/.cache/
+speakers_db.*
+.clj-kondo/
+.lsp/
+*.iml
+*.db
+*.mv.db
+*.trace.db
+.calva/
+.cp_cache/
