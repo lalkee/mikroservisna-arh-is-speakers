@@ -46,12 +46,10 @@
     (println "[handle-delete] decoded id:" id)
     (repo/delete-speaker! ds id)))
 
-;===================== BATCH EVENT LOOKUP ==========================
-
 (defn handle-get-speakers-by-events [ch metadata payload ds]
-  (let [event-ids (decode payload) ; Expecting a list [1, 2, 3] from Java
+  (let [event-ids (decode payload) ; expecting a list [1, 2, 3]
         grouped-map (repo/find-speakers-by-event-ids ds event-ids)
-        ; Ensure we return a list of lists in the exact order requested
+        ; ensure we return a list of lists in the exact order requested
         ordered-results (map #(get grouped-map % []) event-ids)]
     (println "[handle-get-speakers-by-events] processing IDs:" event-ids)
     (publish-response ch metadata ordered-results)))
@@ -63,21 +61,21 @@
     (if (seq participations)
       (let [event-id (:eventId (first participations))]
         (jdbc/with-transaction [tx ds]
-          (println "[handle-save-participations] Syncing event:" event-id)
           (repo/delete-participations-by-event! tx event-id)
           (doseq [p participations]
             (repo/insert-participation! tx (repo/transform-in p))))
-
-        ;; Signal completion to a dedicated queue
-        ;; We don't use publish-response here because this isn't an RPC call from the UI
+        ; signal completion
         (lb/publish ch "" "participation.save.res"
                     (encode {:eventId event-id :status "done"})))
       (println "[handle-save-participations] Empty list, skipping."))))
 
+(defn handle-delete-participation [payload ds]
+  (let [id (decode payload)]
+    (repo/delete-participations-by-event! ds id)))
+
 ;===================== CONSUMER ====================================
 
 (defn start-consumers [ch ds]
-  ;; 1. Standard CRUD Queues
   (lc/subscribe ch "speaker.get.all"
                 (fn [ch metadata payload]
                   (println "\n[QUEUE speaker.get.all] RECEIVED")
@@ -97,20 +95,23 @@
                 {:auto-ack true})
 
   (lc/subscribe ch "participation.save"
-                (fn [ch _ payload] ;; metadata ignored as outbox doesn't provide reply-to
+                (fn [ch _ payload]
                   (println "\n[QUEUE participation.save] RECEIVED")
                   (handle-save-participation ch payload ds))
                 {:auto-ack true})
+  
+  (lc/subscribe ch "participation.delete"
+                (fn [_ _ payload]
+                  (println "\n[QUEUE participation.delete] RECEIVED")
+                  (handle-delete-participation payload ds))
+                {:auto-ack true})
 
-  ;; 2. Specific Query Queues
-  ;; Used to get a specific speaker record by speaker-id
   (lc/subscribe ch "speaker.get.id"
                 (fn [ch metadata payload]
                   (println "\n[QUEUE speaker.get.id] RECEIVED")
                   (handle-get-speaker-by-id ch metadata payload ds))
                 {:auto-ack true})
 
-  ;; Used by Event service to get speakers belonging to specific event-ids
   (lc/subscribe ch "speaker.get.byEventIds"
                 (fn [ch metadata payload]
                   (println "\n[QUEUE speaker.get.byEventIds] RECEIVED")
