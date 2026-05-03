@@ -10,8 +10,8 @@
 
 (def db-spec {:dbtype "mysql"
               :dbname "speakersdb"
-              :host "localhost"
-              :port 3307
+              :host (or (System/getenv "DB_HOST") "localhost")
+              :port (Integer/parseInt (or (System/getenv "DB_PORT") "3307"))
               :user "root"
               :password "root"})
 
@@ -24,8 +24,8 @@
 
     ;uses localhost:5672 by default
     (try
-      (let [conn (rmq/connect)
-            ch   (lch/open conn)]
+      (let [conn (rmq/connect {:host (or (System/getenv "RMQ_HOST") "localhost")})
+            ch (lch/open conn)]
         (messaging/start-consumers ch ds)
         @(promise))
 
