@@ -9,5 +9,5 @@ RUN lein uberjar
 # Run stage
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
-COPY --from=build /app/target/app-standalone.jar app.jar
+COPY --from=build /app/target/uberjar/app-standalone.jar app.jar
 ENTRYPOINT ["java", "-jar", "app.jar"]
