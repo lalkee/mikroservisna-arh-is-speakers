@@ -8,8 +8,12 @@
    [next.jdbc :as jdbc])
   (:gen-class))
 
-(def db-spec {:dbtype "h2"
-              :dbname "/home/milan/Documents/MikroservisnaArhitekturaIS/mikroservisna-arh-is-speakers/speakers_db;AUTO_SERVER=TRUE"})
+(def db-spec {:dbtype "mysql"
+              :dbname "speakersdb"
+              :host "localhost"
+              :port 3307
+              :user "root"
+              :password "root"})
 
 (defn -main [& args]
   (println "Starting Speaker Microservice...")
