@@ -11,4 +11,5 @@
   :main ^:skip-aot mikroservisna-arh-is-speakers.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all
-                       :jvm-opts ["-Dclojure.compiler.direct-linking=true"]}})
+                       :jvm-opts ["-Dclojure.compiler.direct-linking=true"]}}
+  :uberjar-name "app-standalone.jar")
