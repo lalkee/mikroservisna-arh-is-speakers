@@ -16,3 +16,8 @@ speakers_db.*
 .clj-kondo/
 .lsp/
 *.iml
+*.db
+*.mv.db
+*.trace.db
+.calva/
+.cp_cache/
