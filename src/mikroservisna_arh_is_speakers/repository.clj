@@ -10,8 +10,8 @@
     title VARCHAR(255),
     expertise VARCHAR(255),
     PRIMARY KEY (id)
-);
-  CREATE TABLE IF NOT EXISTS participations (
+);"])
+  (jdbc/execute! ds ["CREATE TABLE IF NOT EXISTS participations (
     id BIGINT NOT NULL AUTO_INCREMENT,
     event_id BIGINT,
     speaker_id BIGINT,

@@ -21,3 +21,4 @@ speakers_db.*
 *.trace.db
 .calva/
 .cp_cache/
+.idea
