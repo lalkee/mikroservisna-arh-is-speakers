@@ -2,6 +2,7 @@
   (:require [cheshire.core :as json]
             [langohr.basic :as lb]
             [langohr.consumers :as lc]
+            [langohr.queue :as lq] ; Added requirement
             [next.jdbc :as jdbc]
             [mikroservisna-arh-is-speakers.repository :as repo]))
 
@@ -76,6 +77,12 @@
 ;===================== CONSUMER ====================================
 
 (defn start-consumers [ch ds]
+  ;; Explicitly declare queues before subscribing
+  (doseq [q ["speaker.get.all" "speaker.save" "speaker.delete"
+             "participation.save" "participation.delete"
+             "speaker.get.id" "speaker.get.byEventIds"]]
+    (lq/declare ch q {:durable true :exclusive false :auto-delete false}))
+
   (lc/subscribe ch "speaker.get.all"
                 (fn [ch metadata payload]
                   (println "\n[QUEUE speaker.get.all] RECEIVED")
@@ -99,7 +106,7 @@
                   (println "\n[QUEUE participation.save] RECEIVED")
                   (handle-save-participation ch payload ds))
                 {:auto-ack true})
-  
+
   (lc/subscribe ch "participation.delete"
                 (fn [_ _ payload]
                   (println "\n[QUEUE participation.delete] RECEIVED")
