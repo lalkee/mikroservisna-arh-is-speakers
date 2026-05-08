@@ -55,6 +55,19 @@
     (println "[handle-get-speakers-by-events] processing IDs:" event-ids)
     (publish-response ch metadata ordered-results)))
 
+(defn handle-restore-speaker [payload ds]
+  (let [data (decode payload)
+        speaker (:speaker data)
+        event-ids (:eventIds data)]
+    (jdbc/with-transaction [tx ds]
+      ;; 1. Re-insert the speaker
+      (repo/insert-speaker! tx speaker)
+
+      ;; 2. Re-insert participations for each event
+      (doseq [event-id event-ids]
+        (repo/insert-participation! tx {:event_id event-id :speaker_id (:id speaker)}))
+      (println "[RESTORE] Speaker and participations restored for ID:" (:id speaker)))))
+
 ;===================== PARTICIPATION ===============================
 
 (defn handle-save-participation [ch payload ds]
@@ -74,14 +87,22 @@
   (let [id (decode payload)]
     (repo/delete-participations-by-event! ds id)))
 
+(defn handle-check-participation [ch metadata payload ds]
+  (let [speaker-id (decode payload)
+        has-participations? (repo/check-participation ds speaker-id)]
+    (println "[handle-check-participation] speaker-id:" speaker-id "result:" has-participations?)
+    (publish-response ch metadata has-participations?)))
+
 ;===================== CONSUMER ====================================
 
 (defn start-consumers [ch ds]
-  ;; Explicitly declare queues before subscribing
+  
   (doseq [q ["speaker.get.all" "speaker.save" "speaker.delete"
              "participation.save" "participation.delete"
-             "speaker.get.id" "speaker.get.byEventIds"]]
-    (lq/declare ch q {:durable true :exclusive false :auto-delete false}))
+             "speaker.get.id" "speaker.get.byEventIds" "participation.check" "participation.check.res" "speaker.restore" "events.delete.speaker"]]
+    (println "Attempting to declare queue:" q)
+    (lq/declare ch q {:durable true :exclusive false :auto-delete false})
+    (println "Declared queue:" q))
 
   (lc/subscribe ch "speaker.get.all"
                 (fn [ch metadata payload]
@@ -123,4 +144,15 @@
                 (fn [ch metadata payload]
                   (println "\n[QUEUE speaker.get.byEventIds] RECEIVED")
                   (handle-get-speakers-by-events ch metadata payload ds))
+                {:auto-ack true})
+  
+  (lc/subscribe ch "participation.check"
+                (fn [ch metadata payload]
+                  (handle-check-participation ch metadata payload ds))
+                {:auto-ack true})
+  
+  (lc/subscribe ch "speaker.restore"
+                (fn [_ _ payload]
+                  (handle-restore-speaker payload ds))
                 {:auto-ack true}))
+

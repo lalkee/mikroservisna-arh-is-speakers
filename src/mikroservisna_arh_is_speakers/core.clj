@@ -5,6 +5,7 @@
    [langohr.core :as rmq]
    [mikroservisna-arh-is-speakers.messaging :as messaging]
    [mikroservisna-arh-is-speakers.repository :as repo]
+   [mikroservisna-arh-is-speakers.outbox :as outbox]
    [next.jdbc :as jdbc])
   (:gen-class))
 
@@ -21,12 +22,14 @@
   (let [ds (jdbc/get-datasource db-spec)]
     (repo/create-tables! ds)
     (println "Database initialized.")
+    
 
     ;uses localhost:5672 by default
     (try
       (let [conn (rmq/connect {:host (or (System/getenv "RMQ_HOST") "localhost")})
             ch (lch/open conn)]
         (messaging/start-consumers ch ds)
+        (outbox/start-outbox-worker ds ch)
         @(promise))
 
       (catch Exception e

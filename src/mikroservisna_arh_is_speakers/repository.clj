@@ -1,7 +1,10 @@
 (ns mikroservisna-arh-is-speakers.repository
   (:require [next.jdbc.sql :as sql]
             [next.jdbc :as jdbc]
-            [clojure.string :as str]))
+            [next.jdbc.result-set :as rs]
+            [clojure.string :as str]
+            [cheshire.core :as json]))
+
 (defn create-tables! [ds]
   (jdbc/execute! ds ["CREATE TABLE IF NOT EXISTS speakers (
     id BIGINT NOT NULL AUTO_INCREMENT,
@@ -19,8 +22,14 @@
     CONSTRAINT fk_speaker
       FOREIGN KEY (speaker_id) 
       REFERENCES speakers(id)
-      ON DELETE RESTRICT
-);"]))
+      ON DELETE CASCADE);"])
+  (jdbc/execute! ds ["CREATE TABLE IF NOT EXISTS outbox (
+      id BIGINT NOT NULL AUTO_INCREMENT,
+      queue VARCHAR(255),
+      payload TEXT,
+      timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      PRIMARY KEY (id)
+  );"]))
 
 (defn- to-camel [k]
   (let [parts (clojure.string/split (clojure.string/lower-case (name k)) #"_")]
@@ -47,6 +56,19 @@
     (reduce-kv (fn [m k v] (assoc m (to-kebab k) v)) {} data)
     data))
 
+;======================== OUTBOX ===================================
+
+(defn insert-outbox! [tx queue payload]
+  (sql/insert! tx :outbox {:queue queue
+                           :payload payload}))
+
+(defn find-pending-outbox [ds]
+  (sql/query ds ["SELECT * FROM outbox ORDER BY timestamp ASC LIMIT 50"]
+             {:builder-fn rs/as-unqualified-lower-maps}))
+
+(defn delete-outbox-record! [ds id]
+  (sql/delete! ds :outbox {:id id}))
+
 ;===================== SPEAKER =====================================
 
 (defn insert-speaker! [ds speaker]
@@ -62,7 +84,19 @@
   (transform-out (sql/query ds ["SELECT * FROM speakers"])))
 
 (defn delete-speaker! [ds id]
-  (sql/delete! ds :speakers {:id id}))
+  (jdbc/with-transaction [tx ds]
+    (let [speaker (find-speaker-by-id tx id)
+          ;; FIX: Add the builder-fn here!
+          event-ids (map :event_id
+                         (sql/query tx
+                                    ["SELECT event_id FROM participations WHERE speaker_id = ?" id]
+                                    {:builder-fn rs/as-unqualified-lower-maps}))]
+
+      (sql/delete! tx :speakers {:id id})
+
+      (let [payload (json/generate-string {:speaker speaker
+                                           :eventIds event-ids})]
+        (insert-outbox! tx "events.delete.speaker" payload)))))
 
 (defn find-speakers-by-event-ids [ds event-ids]
   (if (empty? event-ids)
@@ -84,4 +118,8 @@
 (defn delete-participations-by-event! [ds event-id]
   (println "[repo] Clearing old participations for event-id:" event-id)
   (sql/delete! ds :participations {:event_id event-id}))
+
+(defn check-participation [ds speaker-id]
+  (let [result (sql/query ds ["SELECT 1 FROM participations WHERE speaker_id = ? LIMIT 1" speaker-id])]
+    (boolean (seq result))))
 
